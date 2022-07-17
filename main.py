@@ -24,7 +24,7 @@ data_name = sys.argv[1]
 f = open(data_name, 'r')
 s = f.read()
 f.close()
-dic = json.loads(s)
+products = json.loads(s)
 
 namesList = []
 pricesList = []
@@ -32,17 +32,20 @@ fatsList = []
 proteinList = []
 carbsList = []
 
-for key, value in dic.items():
+n = len(products)
+for i, product in enumerate(products):
+    print(f"Product {i}/{n}")
     try:
-        name = key
-        price = value['price_per_g']
-        fats = value['nutritional_value']['fat']
-        protein = value['nutritional_value']['protein']
-        carbs = value['nutritional_value']['carb']
-        if None in [price, carbs, fats, protein]:
-            raise Exception("Something is missing")
+        name = product["name"]
+        if product["comparePriceUnit"] == "kg":
+            comparePrice = product["comparePrice"] / 1000
+        else:
+            raise Exception(f"comparePriceUnit was not kg for {name}")
+        fats = float(product["fats"]) / 100
+        protein = float(product["protein"]) / 100
+        carbs = float(product["carbs"]) / 100
         namesList.append(name)
-        pricesList.append(price)
+        pricesList.append(comparePrice)
         fatsList.append(fats)
         proteinList.append(protein)
         carbsList.append(carbs)
@@ -79,6 +82,7 @@ for i in range(N_RESULTS):
         break
 
 # Print results
+print()
 for j, res in enumerate(results):
     print(f"Option #{j+1}:")
     mask = res.x > 1
