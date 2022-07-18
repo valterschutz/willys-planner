@@ -1,3 +1,4 @@
+import re
 import sys
 import pdb
 import numpy as np
@@ -11,7 +12,7 @@ import seaborn as sns
 # from scipy.optimize import Bounds
 from scipy.optimize import linprog
 
-CARB_GOAL = 300
+CARB_GOAL = 250
 PROTEIN_GOAL = 200
 FAT_GOAL = 60
 N_RESULTS = int(sys.argv[2])  # Maximum number of food combinations to show
@@ -35,11 +36,22 @@ fatsList = []
 proteinList = []
 carbsList = []
 
+# Get blacklist words
+blacklisted = []
+f = open("blacklist.txt", "r")
+for line in f:
+    blacklisted.append(line.strip())
+f.close()
+
+
 n = len(products)
 for i, product in enumerate(products):
     print(f"Product {i}/{n}")
     try:
         name = product["name"]
+        for blacklisted_name in blacklisted:
+            if re.search(f'\\b{blacklisted_name.lower()}\\b', name.lower()):
+                raise Exception(f"{name} was blacklisted")
         if product["comparePriceUnit"] == "kg":
             comparePrice = product["comparePrice"] / 1000
         else:
@@ -74,7 +86,7 @@ for i in range(N_RESULTS):
     b = np.array([CARB_GOAL,PROTEIN_GOAL,FAT_GOAL])
     A = np.vstack((carbsArray,proteinArray,fatsArray)) * keep_mask
     A_ub = np.vstack((A, -A))
-    b_ub = np.concatenate((2*b, -b))
+    b_ub = np.concatenate((MACRO_CONSTRAINT*b, -b))
     res = linprog(pricesArray, A_ub, b_ub)
     # We are not guaranteed to find N_RESULTS solutions, especially
     # if we don't have many foods to choose from.
