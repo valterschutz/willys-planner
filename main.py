@@ -11,7 +11,10 @@ import seaborn as sns
 # from scipy.optimize import Bounds
 from scipy.optimize import linprog
 
-N_RESULTS = 3  # Maximum number of food combinations to show
+CARB_GOAL = 300
+PROTEIN_GOAL = 200
+FAT_GOAL = 60
+N_RESULTS = int(sys.argv[2])  # Maximum number of food combinations to show
 # Only show items in solution over threshold (in grams)
 THRESHOLD = 1
 # Accept macros up to some ratio of their specified value
@@ -68,7 +71,7 @@ for i in range(N_RESULTS):
     # Define objective function (cost)
     def obj(x):
         return np.dot(x,pricesArray)
-    b = np.array([400,200,60])
+    b = np.array([CARB_GOAL,PROTEIN_GOAL,FAT_GOAL])
     A = np.vstack((carbsArray,proteinArray,fatsArray)) * keep_mask
     A_ub = np.vstack((A, -A))
     b_ub = np.concatenate((2*b, -b))
