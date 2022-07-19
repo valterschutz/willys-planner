@@ -7,15 +7,12 @@ import json
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
-# from scipy.optimize import minimize
-# from scipy.optimize import LinearConstraint
-# from scipy.optimize import Bounds
 from scipy.optimize import linprog
 
-CARB_GOAL = 250
-PROTEIN_GOAL = 200
-FAT_GOAL = 60
-N_RESULTS = int(sys.argv[2])  # Maximum number of food combinations to show
+CARB_GOAL = int(sys.argv[2])
+PROTEIN_GOAL = int(sys.argv[3])
+FAT_GOAL = int(sys.argv[4])
+N_RESULTS = int(sys.argv[5])  # Maximum number of food combinations to show
 # Only show items in solution over threshold (in grams)
 THRESHOLD = 1
 # Accept macros up to some ratio of their specified value
