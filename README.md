@@ -1,5 +1,5 @@
 # willys-planner
-A python script for calculating the cheapest food combinations, given macros (how many grams of carbohydrates, proteins and fats to eat each day).
+A python script for calculating the cheapest food combinations, given macros (how many grams of carbohydrates, proteins and fats to eat each day). Data generated with [willys-json](https://github.com/valterschutz/willys-json).
 
 ## Usage
 ```
