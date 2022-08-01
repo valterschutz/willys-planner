@@ -5,7 +5,7 @@ A python script for calculating the cheapest food combinations, given macros (ho
 ```
 python3 main.py [-h] [-n N] [--fluids] [-v] [-d DATA] [-b BLACKLIST] carbs protein fats
 ```
-Run ```python3 main.py --help`` for info about each option.
+Run ```python3 main.py --help``` for info about each option.
 
 ## Dependencies
 NumPy and SciPy. Install these by running ```python3 -m pip install numpy scipy```.
